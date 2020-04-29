@@ -1,0 +1,15 @@
+#!/bin/bash
+
+mkdir "/home/ubuntu/staging/$1"
+tar xf "/home/ubuntu/.tmp/$1.tar.gz" -C "/home/ubuntu/staging/$1"
+rm "/home/ubuntu/.tmp/$1.tar.gz"
+
+cp /home/ubuntu/sysad/compose/wordpress.yml "/home/ubuntu/staging/$1/docker-compose.yml"
+sed -ri -e "s/APP_NAME/$1/" "/home/ubuntu/staging/$1/docker-compose.yml"
+
+mysql --defaults-extra-file=/home/ubuntu/.config/mysql/my.conf -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS \`$1\`;"
+
+cd "/home/ubuntu/staging/$1"
+docker-compose up -d
+
+sed -i -e "s/define( 'WP_DEBUG', false );/define( 'WP_DEBUG', true );\ndefine('FORCE_SSL_ADMIN', true);\nif (strpos(\$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)\n\$_SERVER['HTTPS']='on';/" "/home/ubuntu/staging/$1/wp-config.php"

@@ -1,0 +1,23 @@
+version: '3'
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    container_name: APP_NAME
+    expose:
+      - '80'
+    environment:
+      VIRTUAL_HOST: APP_NAME.ctag-w.xyz
+      LETSENCRYPT_HOST: APP_NAME.ctag-w.xyz
+      LETSENCRYPT_EMAIL: kubok.dev@gmail.com
+      WORDPRESS_DB_HOST: 52.192.140.193
+      WORDPRESS_DB_USER: native
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: APP_NAME
+    volumes:
+      - .:/var/www/html
+
+networks:
+  default:
+    external:
+      name: production
