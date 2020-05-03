@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -eu
+
+function usage() {
+  echo "env-base start => MySQL、NGINX、DNSサーバー起動"
+  echo "env-base stop => MYSQL、NGINX、DNSサーバー停止"
+}
+
+if [ $# = 1 ]; then
+  dir=$(pwd)
+  cd ~/.env/compose/base
+  if [ "$1" = "start" ]; then
+    echo "起動中..."
+    docker-compose up -d
+    cd "$dir"
+  elif [ "$1" = "stop" ]; then
+    echo "停止中..."
+    docker-compose down
+    cd "$dir"
+  else
+    cd "$dir"
+    usage
+  fi
+else
+  usage
+fi

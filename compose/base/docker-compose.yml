@@ -1,0 +1,58 @@
+version: '3'
+services:
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - vhosts:/etc/nginx/vhost.d
+      - public:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt-nginx
+    privileged: true
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhosts:/etc/nginx/vhost.d
+      - public:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: always
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./conf.d/mysql_init:/docker-entrypoint-initdb.d
+      - mysql/:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    restart: always
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - '6379:6379'
+    restart: always
+
+networks:
+  default:
+    external:
+      name: production
+
+volumes:
+  mysql:
+    external: true
+  certs:
+  vhosts:
+  public:
