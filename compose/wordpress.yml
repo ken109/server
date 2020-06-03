@@ -10,7 +10,7 @@ services:
       VIRTUAL_HOST: APP_NAME.ctag-w.xyz
       LETSENCRYPT_HOST: APP_NAME.ctag-w.xyz
       LETSENCRYPT_EMAIL: kubok.dev@gmail.com
-      WORDPRESS_DB_HOST: 52.192.140.193
+      WORDPRESS_DB_HOST: 172.18.0.1:33065
       WORDPRESS_DB_USER: native
       WORDPRESS_DB_PASSWORD: password
       WORDPRESS_DB_NAME: APP_NAME
