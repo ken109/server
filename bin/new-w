@@ -17,6 +17,8 @@ if [ $# -ge 1 ]; then
 
   cd "/home/ubuntu/staging/$1"
   docker-compose up -d
+  
+  sudo chown -R www-data:www-data "/home/ubuntu/staging/$1"
 
   sed -ri -e "s/.*'WP_DEBUG'.*/define( 'WP_DEBUG', true );\ndefine('FORCE_SSL_ADMIN', true);\nif (strpos(\$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)\n\$_SERVER['HTTPS']='on';/" "/home/ubuntu/staging/$1/wp-config.php"
 else
