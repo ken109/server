@@ -3,6 +3,9 @@
 set -eu
 
 if [ $# -ge 1 ]; then
+  if [ -d "/home/ubuntu/staging/$1" ]; then
+    rm -rf "/home/ubuntu/staging/$1"
+  fi
   mkdir "/home/ubuntu/staging/$1"
   tar xf "/home/ubuntu/.tmp/$1.tar.gz" -C "/home/ubuntu/staging/$1"
   rm "/home/ubuntu/.tmp/$1.tar.gz"
