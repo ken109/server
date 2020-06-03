@@ -10,7 +10,7 @@ if [ $# -ge 1 ]; then
   cp /home/ubuntu/.env/compose/wordpress.yml "/home/ubuntu/staging/$1/docker-compose.yml"
   sed -ri -e "s/APP_NAME/$1/" "/home/ubuntu/staging/$1/docker-compose.yml"
 
-  mysql --defaults-extra-file=/home/ubuntu/.env/mysql.conf -h 127.0.0.1 -e "CREATE DATABASE IF NOT EXISTS \`$1\`;"
+  mysql --defaults-extra-file=/home/ubuntu/.env/mysql.conf -h 127.0.0.1 -P 33065 -e "CREATE DATABASE IF NOT EXISTS \`$1\`;"
 
   cd "/home/ubuntu/staging/$1"
   docker-compose up -d
